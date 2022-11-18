@@ -29,7 +29,7 @@ void buildListsNodesMPI(Mesh& mesh)
     maskNodesEachProc(nTask,nGlo1) = 1;
     maskNodesEachProc(nTask,nGlo2) = 1;
   }
-  
+
   //==== Build local numbering for nodes belonging to the current MPI process (i.e. interior + interfaces)
   
   IntVector nodesGloToLoc(mesh.nbOfNodes);
@@ -41,6 +41,23 @@ void buildListsNodesMPI(Mesh& mesh)
     }
     else{
       nodesGloToLoc(nGlo) = -1;  // this node does not belong to the current MPI process
+    }
+  }
+
+  //==== Build list to count for each node to how many MPI process its belongs
+
+  mesh.countShareNodes.resize(mesh.nbOfNodes);
+    for(int nGlo=0; nGlo<mesh.nbOfNodes; nGlo++){
+      mesh.countShareNodes(nGlo) = 0;
+    }
+
+  for(int nGlo=0; nGlo<mesh.nbOfNodes; nGlo++){
+    int mycount = 0;
+    if (nodesGloToLoc(nGlo)!=-1){
+      for(int nTask=0; nTask<nbTasks; nTask++){
+        mycount = mycount+maskNodesEachProc(nTask,nGlo); // Because maskNodesEachProc is composed only by 0 and 1.
+      }
+      mesh.countShareNodes(nodesGloToLoc(nGlo)) = mycount;
     }
   }
   

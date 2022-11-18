@@ -1,0 +1,20 @@
+$MeshFormat
+2.2 0 0
+$EndMeshFormat
+$ElementNodeData
+2
+"solRef"
+
+1
+0
+4
+0
+1
+5
+2
+10 3 0.5 1 1
+11 3 1 1.5 1
+12 3 1.5 1.29167 1
+13 3 1 0.75 1.29167
+14 3 1.29167 0.75 1
+$EndElementNodeData

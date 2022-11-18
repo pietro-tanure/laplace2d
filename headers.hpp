@@ -35,6 +35,7 @@ struct Mesh
   // Infos for parallel computations
   IntVector numNodesToExch;   // number of nodal values to exchanges between the current proc and each other proc  (Size: nbTasks)
   IntMatrix nodesToExch;      // list of nodal values to exchanges between the current proc and each other proc    (Size: nbTasks x max(numNodesToExch) )
+  IntVector countShareNodes;  // list counting for each node to how many MPI process its belongs (Size: nbOfNodes)
 };
 
 // Structure for problem
@@ -75,5 +76,9 @@ void buildProblem(Problem& p, Mesh& mesh, double alpha, Vector& f);
 
 // Solution of the system Au=b with Jacobi
 void jacobi(SpMatrix& A, Vector& b, Vector& u, Mesh& mesh, double tol, int maxit);
+
+// Solution of the system Au=b with Gradient-Conjugue
+void gradient_conjugue(SpMatrix& A, Vector& b, Vector& u, Mesh& mesh, double tol, int maxit); 
+
 
 #endif /* HEADERS_HPP */
